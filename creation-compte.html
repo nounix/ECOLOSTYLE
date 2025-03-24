@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Création de compte - ÉcoloStyle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .account-form {
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+    .account-form h1 {
+      margin-bottom: 1.5rem;
+      font-size: 2rem;
+      color: #6b8e23;
+    }
+    .account-form input, .account-form select {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+    .account-form button {
+      background-color: #6b8e23;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-top: 10px;
+      transition: background-color 0.3s;
+      width: 100%;
+    }
+    .account-form button:hover {
+      background-color: #5a7c1d;
+    }
+    .error {
+      color: red;
+      font-size: 0.9rem;
+      margin-top: -5px;
+      margin-bottom: 10px;
+      text-align: left;
+    }
+    .home-link {
+      display: block;
+      margin-top: 15px;
+      color: #6b8e23;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+    .home-link:hover {
+      text-decoration: underline;
+    }
+    .login-link {
+      margin-top: 15px;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="account-form">
+    <h1>Création de compte</h1>
+    <form id="signupForm">
+      <input type="text" id="nom" name="nom" placeholder="Nom" required>
+      <input type="text" id="prenom" name="prenom" placeholder="Prénom" required>
+      <input type="date" id="date_naissance" name="date_naissance" placeholder="Date de naissance" required>
+      <select id="sexe" name="sexe" required>
+        <option value="">Sexe</option>
+        <option value="Homme">Homme</option>
+        <option value="Femme">Femme</option>
+        <option value="Autre">Autre</option>
+      </select>
+      <input type="email" id="email" name="email" placeholder="Email" required>
+      <input type="password" id="mot_de_passe" name="mot_de_passe" placeholder="Mot de passe" required>
+      <div id="errorMessage" class="error"></div>
+      <button type="button" onclick="creerCompte()">Sauvegarder</button>
+    </form>
+    <p class="login-link">Déjà un compte? <a href="connexion.html">Se connecter</a></p>
+    <a href="index.html" class="home-link">← Revenir à la page d'accueil</a>
+  </div>
+
+  <script>
+    function creerCompte() {
+      const errorElement = document.getElementById('errorMessage');
+      errorElement.textContent = '';
+      
+      // Récupération des valeurs
+      const nom = document.getElementById('nom').value.trim();
+      const prenom = document.getElementById('prenom').value.trim();
+      const dateNaissance = document.getElementById('date_naissance').value;
+      const sexe = document.getElementById('sexe').value;
+      const email = document.getElementById('email').value.trim();
+      const motDePasse = document.getElementById('mot_de_passe').value;
+
+      // Validation simple
+      if (!nom || !prenom || !dateNaissance || !sexe || !email || !motDePasse) {
+        errorElement.textContent = 'Tous les champs sont obligatoires';
+        return;
+      }
+
+      if (motDePasse.length < 6) {
+        errorElement.textContent = 'Le mot de passe doit contenir au moins 6 caractères';
+        return;
+      }
+
+      // Création de l'objet utilisateur
+      const userData = {
+        nom,
+        prenom,
+        date_naissance: dateNaissance,
+        sexe,
+        email,
+        mot_de_passe: motDePasse,
+        isLoggedIn: true
+      };
+
+      // Stockage dans localStorage
+      localStorage.setItem('currentUser', JSON.stringify(userData));
+      
+      // Stockage des utilisateurs
+      let users = JSON.parse(localStorage.getItem('users')) || [];
+      users.push(userData);
+      localStorage.setItem('users', JSON.stringify(users));
+
+      // Redirection vers le profil
+      window.location.href = 'uti.html';
+    }
+  </script>
+</body>
+</html>
